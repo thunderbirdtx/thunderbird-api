@@ -57,6 +57,13 @@ Issues, feedback, and PRs welcome as we open up!
 
 ---
 
+## Licensing
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).  
+You are free to use, modify, and distribute the software with proper attribution.
+
+---
+
 ##  Support the Project
 
 If this tool saves you gas, consider donating:
