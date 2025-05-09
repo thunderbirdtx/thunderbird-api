@@ -7,7 +7,7 @@ Estimate gas, submit private bundles, and save ETH — all powered by open sourc
 
 ## What is Thunderbird?
 
-Thunderbird is a lightweight infrastructure project designed to help bots and wallets optimize their Ethereum transactions. It includes:
+Thunderbird is a lightweight infrastructure project designed to help bots, dApps and wallets optimize their Ethereum transactions. It includes:
 
 - A private gas-aware API
 - Open-source SDKs for bots/devs
