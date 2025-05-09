@@ -54,7 +54,7 @@ router.post("/", async (req, res) => {
         const json = await response.json();
 
         if (json.error) {
-            console.error("❌ Flashbots error:", json.error);
+            console.error("Flashbots error:", json.error);
             return res.status(502).json({ error: json.error.message || "Flashbots error" });
         }
 
@@ -64,7 +64,7 @@ router.post("/", async (req, res) => {
             bundleHash: json.result, // Flashbots returns hash
         });
     } catch (err) {
-        console.error("🔥 Failed to submit bundle:", err);
+        console.error("Failed to submit bundle:", err);
         res.status(500).json({ error: "Internal server error" });
     }
 });

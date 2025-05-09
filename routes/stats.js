@@ -36,7 +36,7 @@ router.get("/:wallet", async (req, res) => {
         });
 
     } catch (err) {
-        console.error("🔥 Error in /stats:", err);
+        console.error("Error in /stats:", err);
         res.status(500).json({ error: "Failed to fetch wallet stats" });
     }
 });

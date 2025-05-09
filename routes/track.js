@@ -16,7 +16,7 @@ router.get("/:txHash", async (req, res) => {
         const tx = await provider.getTransaction(txHash);
 
         if (!receipt || !tx) {
-            console.log("❌ Transaction not found");
+            console.log("Transaction not found");
             return res.status(404).json({ error: "Transaction not found" });
         }
 
@@ -24,7 +24,7 @@ router.get("/:txHash", async (req, res) => {
         const effectiveGasPrice = receipt.effectiveGasPrice?.toString() || "0";
         const totalEthUsed = (BigInt(gasUsed) * BigInt(effectiveGasPrice)).toString();
 
-        console.log("✅ Found tx, saving to DB...");
+        console.log("Found tx, saving to DB...");
 
         await prisma.transaction.upsert({
             where: { hash: txHash },
@@ -54,7 +54,7 @@ router.get("/:txHash", async (req, res) => {
             saved: true,
         });
     } catch (err) {
-        console.error("🔥 Error in /track:", err); // FULL error object
+        console.error("Error in /track:", err); // FULL error object
         res.status(500).json({ error: "Failed to fetch or store transaction" });
     }
 });
