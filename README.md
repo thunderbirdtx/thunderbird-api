@@ -27,8 +27,8 @@ Follow along [on Twitter](https://twitter.com/thunderbirdtx) for updates.
 ##  Getting Started (Dev)
 
 ```bash
-git clone https://github.com/yourname/thunderbird.git
-cd thunderbird/api
+git clone https://github.com/thunderbirdtx/thunderbird-api.git
+cd thunderbird-api
 npm install
 npm run dev
 ```
