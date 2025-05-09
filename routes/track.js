@@ -1,5 +1,5 @@
 const express = require("express");
-const { JsonRpcProvider } = require("ethers");
+const { JsonRpcProvider, isHexString } = require("ethers");
 const { PrismaClient } = require("@prisma/client");
 
 const router = express.Router();
@@ -9,8 +9,11 @@ const prisma = new PrismaClient();
 router.get("/:txHash", async (req, res) => {
     const { txHash } = req.params;
 
+    if (!isHexString(txHash) || txHash.length !== 66) {
+        return res.status(400).json({ error: "Invalid transaction hash format" });
+    }
+
     try {
-        console.log("⏳ Fetching transaction for:", txHash);
 
         const receipt = await provider.getTransactionReceipt(txHash);
         const tx = await provider.getTransaction(txHash);
