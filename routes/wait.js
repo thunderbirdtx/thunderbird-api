@@ -1,28 +1,54 @@
-// routes/wait.js
 const express = require("express");
-const { JsonRpcProvider } = require("ethers");
-
 const router = express.Router();
-const provider = new JsonRpcProvider(process.env.RPC_URL);
+const { ethers } = require("ethers");
+const { v4: uuidv4 } = require("uuid");
+const redis = require("../lib/redis");
 
-router.get("/:hash", async (req, res) => {
-    const { hash } = req.params;
+const RPC_URL = process.env.RPC_URL;
+const provider = new ethers.JsonRpcProvider(RPC_URL);
+
+router.post("/", async (req, res) => {
+    const { signedTx, maxGasGwei } = req.body;
+
+    if (!signedTx || !maxGasGwei) {
+        return res.status(400).json({ error: "Missing signedTx or maxGasGwei" });
+    }
+
+    const jobId = uuidv4();
+    const job = {
+        signedTx,
+        maxGasGwei,
+        createdAt: Date.now(),
+    };
+
+    await redis.set(`waitjob:${jobId}`, JSON.stringify(job));
+
+    res.json({ status: "waiting", jobId });
+});
+
+
+// GET /api/wait/:jobId
+router.get("/:jobId", async (req, res) => {
+    const jobId = req.params.jobId;
+    const key = `waitjob:${jobId}`;
 
     try {
-        console.log(`⏳ Waiting for tx ${hash}...`);
-        const receipt = await provider.waitForTransaction(hash, 1, 60_000); // 1 confirmation, 60s timeout
+        const job = await redis.get(key);
 
-        if (!receipt) return res.status(408).json({ error: "Timed out" });
+        if (!job) {
+            return res.status(404).json({ status: "not_found", jobId });
+        }
 
         res.json({
-            status: receipt.status === 1 ? "Success" : "Failed",
-            blockNumber: receipt.blockNumber,
-            gasUsed: receipt.gasUsed.toString(),
+            status: "waiting",
+            jobId,
+            job: JSON.parse(job),
         });
     } catch (err) {
-        console.error("wait error:", err);
-        res.status(500).json({ error: "Failed to wait for tx" });
+        console.error("Error checking wait job status:", err.message);
+        res.status(500).json({ error: "internal_error" });
     }
 });
+
 
 module.exports = router;
