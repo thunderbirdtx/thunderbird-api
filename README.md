@@ -5,7 +5,7 @@ Estimate gas, submit private bundles, and save ETH — all powered by open sourc
 
 ---
 
-## 💡 What is Thunderbird?
+## What is Thunderbird?
 
 Thunderbird is a lightweight infrastructure project designed to help bots and wallets optimize their Ethereum transactions. It includes:
 
@@ -19,21 +19,12 @@ Thunderbird is a lightweight infrastructure project designed to help bots and wa
 ## 🚧 Status
 
 Thunderbird is currently in active development.  
-Follow along [on Twitter](https://twitter.com/thunderbird_eth) for updates.
+Follow along [on Twitter](https://twitter.com/thunderbirdtx) for updates.
 
 ---
 
-## 📦 Monorepo Overview
 
-| Path           | Description                      |
-|----------------|----------------------------------|
-| `/api`         | Express-based private gas API    |
-| `/sdk`         | Public TypeScript SDK (soon)     |
-| `/site`        | Coming soon landing page         |
-
----
-
-## 🛠 Getting Started (Dev)
+##  Getting Started (Dev)
 
 ```bash
 git clone https://github.com/yourname/thunderbird.git
@@ -46,27 +37,27 @@ npm run dev
 
 ---
 
-## 🧠 Roadmap Highlights
+##  Roadmap Highlights
 
 - [x] Gas estimate API
 - [x] Flashbots submission support
 - [x] EIP-1559 replacement logic
 - [x] Wallet gas usage tracking
 - [ ] `/simulate`, `/wait`, `/alerts` endpoints
-- [ ] SDK release
+- [ ] [SDK release](https://github.com/thunderbirdtx/thunderbird)
 - [ ] Gas strategy plugin support
 - [ ] L2 + multi-chain support
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Open source SDKs will be released under MIT.  
 Issues, feedback, and PRs welcome as we open up!
 
 ---
 
-## 💸 Support the Project
+##  Support the Project
 
 If this tool saves you gas, consider donating:
 
