@@ -1,5 +1,7 @@
 # 🦅 Thunderbird
 
+![Tests](https://github.com/thunderbirdtx/thunderbird/actions/workflows/test.yml/badge.svg)
+
 **Gas optimization infrastructure for Ethereum bots & wallets.**  
 Estimate gas, submit private bundles, and save ETH — all powered by open source tools.
 

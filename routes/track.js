@@ -1,16 +1,21 @@
 const express = require("express");
-const { JsonRpcProvider } = require("ethers");
+const { JsonRpcProvider, isHexString } = require("ethers");
 const { PrismaClient } = require("@prisma/client");
 
 const router = express.Router();
-const provider = new JsonRpcProvider(process.env.RPC_URL); // Set this in .env
+const getProvider = () => new JsonRpcProvider(process.env.RPC_URL);
 const prisma = new PrismaClient();
 
 router.get("/:txHash", async (req, res) => {
     const { txHash } = req.params;
 
+    if (!isHexString(txHash) || txHash.length !== 66) {
+        return res.status(400).json({ error: "Invalid transaction hash format" });
+    }
+
     try {
-        console.log("⏳ Fetching transaction for:", txHash);
+
+        const provider = getProvider();
 
         const receipt = await provider.getTransactionReceipt(txHash);
         const tx = await provider.getTransaction(txHash);
@@ -26,21 +31,23 @@ router.get("/:txHash", async (req, res) => {
 
         console.log("Found tx, saving to DB...");
 
-        await prisma.transaction.upsert({
-            where: { hash: txHash },
-            update: {},
-            create: {
-                hash: txHash,
-                from: tx.from,
-                to: tx.to,
-                value: tx.value.toString(),
-                gasUsed,
-                effectiveGasPrice,
-                totalEthUsed,
-                blockNumber: receipt.blockNumber,
-                status: receipt.status === 1 ? "Success" : "Failed",
-            },
-        });
+        if (process.env.NODE_ENV !== "test") {
+            await prisma.transaction.upsert({
+                where: { hash: txHash },
+                update: {},
+                create: {
+                    hash: txHash,
+                    from: tx.from,
+                    to: tx.to,
+                    value: tx.value.toString(),
+                    gasUsed,
+                    effectiveGasPrice,
+                    totalEthUsed,
+                    blockNumber: receipt.blockNumber,
+                    status: receipt.status === 1 ? "Success" : "Failed",
+                },
+            });
+        }
 
         return res.json({
             status: receipt.status === 1 ? "Success" : "Failed",
