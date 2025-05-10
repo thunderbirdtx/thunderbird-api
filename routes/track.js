@@ -3,7 +3,7 @@ const { JsonRpcProvider, isHexString } = require("ethers");
 const { PrismaClient } = require("@prisma/client");
 
 const router = express.Router();
-const provider = new JsonRpcProvider(process.env.RPC_URL); // Set this in .env
+const getProvider = () => new JsonRpcProvider(process.env.RPC_URL);
 const prisma = new PrismaClient();
 
 router.get("/:txHash", async (req, res) => {
@@ -14,6 +14,8 @@ router.get("/:txHash", async (req, res) => {
     }
 
     try {
+
+        const provider = getProvider();
 
         const receipt = await provider.getTransactionReceipt(txHash);
         const tx = await provider.getTransaction(txHash);
