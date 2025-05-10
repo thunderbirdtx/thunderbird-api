@@ -1,0 +1,28 @@
+# Node modules
+node_modules
+
+# Logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# dotenv files
+.env
+.env.local
+.env.*.local
+
+# Prisma generated client (optional, rebuild in container)
+node_modules/.prisma
+prisma/dev.db
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode
+.idea
+
+# Coverage / test
+coverage
+__tests__/tmp

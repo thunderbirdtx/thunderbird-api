@@ -17,10 +17,10 @@ const pollWaitJobs = async () => {
             if (baseFee <= job.maxGasGwei) {
                 try {
                     const txHash = await provider.broadcastTransaction(job.signedTx);
-                    console.log(`✅ Sent ${key}: ${txHash}`);
+                    console.log(`Sent ${key}: ${txHash}`);
                     await redis.del(key);
                 } catch (err) {
-                    console.error(`❌ Failed to send ${key}:`, err.message);
+                    console.error(` Failed to send ${key}:`, err.message);
                 }
             }
         }
@@ -30,5 +30,5 @@ const pollWaitJobs = async () => {
 };
 
 // Kick off interval
-console.log("⏳ Starting wait job scheduler...");
+console.log(" Starting wait job scheduler...");
 setInterval(pollWaitJobs, 60_000);
