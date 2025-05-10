@@ -31,21 +31,23 @@ router.get("/:txHash", async (req, res) => {
 
         console.log("Found tx, saving to DB...");
 
-        await prisma.transaction.upsert({
-            where: { hash: txHash },
-            update: {},
-            create: {
-                hash: txHash,
-                from: tx.from,
-                to: tx.to,
-                value: tx.value.toString(),
-                gasUsed,
-                effectiveGasPrice,
-                totalEthUsed,
-                blockNumber: receipt.blockNumber,
-                status: receipt.status === 1 ? "Success" : "Failed",
-            },
-        });
+        if (process.env.NODE_ENV !== "test") {
+            await prisma.transaction.upsert({
+                where: { hash: txHash },
+                update: {},
+                create: {
+                    hash: txHash,
+                    from: tx.from,
+                    to: tx.to,
+                    value: tx.value.toString(),
+                    gasUsed,
+                    effectiveGasPrice,
+                    totalEthUsed,
+                    blockNumber: receipt.blockNumber,
+                    status: receipt.status === 1 ? "Success" : "Failed",
+                },
+            });
+        }
 
         return res.json({
             status: receipt.status === 1 ? "Success" : "Failed",
